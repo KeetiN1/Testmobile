@@ -21,6 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
 
+
     <style>
 
         body { margin: 0; overflow: hidden; background-color: #000000; font-family: 'Segoe UI', sans-serif; }
@@ -56,6 +57,7 @@
         }
 
 
+
         button {
 
             pointer-events: auto; cursor: pointer;
@@ -75,6 +77,7 @@
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
 
 
         /* Camera Preview Vandiep */
@@ -118,6 +121,7 @@
         }
 
 
+
         #error-log { display: none; position: absolute; top: 0; left: 0; color: red; background: rgba(0,0,0,0.8); z-index: 999; padding: 10px; }
 
     </style>
@@ -147,9 +151,11 @@
     </div>
 
 
+
     <!-- Vandiep -->
 
     <div id="copyright">© by vandiep</div>
+
 
 
     <div id="canvas-container"></div>
@@ -157,6 +163,7 @@
     <video class="input_video" style="display:none"></video>
 
     <canvas id="camera-preview"></canvas>
+
 
 
     <script>
@@ -174,6 +181,7 @@
         bgMusic.loop = true; bgMusic.volume = 1.0;
 
 
+
         const loader = new THREE.TextureLoader();
 
         const photoFiles = ['./image1.jpeg', './image2.jpeg', './image3.jpeg', './image4.jpeg', './image5.jpeg'];
@@ -181,6 +189,7 @@
         const photoTextures = [];
 
         photoFiles.forEach((f, i) => photoTextures[i] = loader.load(f));
+
 
 
         function createCustomTexture(type) {
@@ -192,6 +201,7 @@
             const ctx = canvas.getContext('2d');
 
             const cx = 64, cy = 64;
+
 
 
             if (type === 'gold_glow') {
@@ -209,6 +219,7 @@
                 ctx.fillStyle = grd; ctx.fillRect(0,0,128,128);
 
 
+
             } else if (type === 'red_light') {
 
                 const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 50);
@@ -220,6 +231,7 @@
                 grd.addColorStop(1, 'rgba(0,0,0,0)');
 
                 ctx.fillStyle = grd; ctx.fillRect(0,0,128,128);
+
 
 
             } else if (type === 'gift_red') {
@@ -237,6 +249,7 @@
         }
 
 
+
         const textures = {
 
             gold: createCustomTexture('gold_glow'),
@@ -246,6 +259,7 @@
             gift: createCustomTexture('gift_red')
 
         };
+
 
 
         // ==========================================
@@ -273,6 +287,7 @@
         };
 
 
+
         let scene, camera, renderer;
 
         let groupGold, groupRed, groupGift; 
@@ -290,6 +305,7 @@
         let handX = 0.5;
 
 
+
         // ==========================================
 
         // 3. THREE.JS SYSTEM Vandiep
@@ -305,9 +321,11 @@
             scene.fog = new THREE.FogExp2(0x000000, 0.002);
 
 
+
             camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
 
             camera.position.z = 100;
+
 
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -319,11 +337,13 @@
             container.appendChild(renderer.domElement);
 
 
+
             groupGold = createParticleSystem('gold', CONFIG.goldCount, 2.0);
 
             groupRed = createParticleSystem('red', CONFIG.redCount, 3.5); 
 
             groupGift = createParticleSystem('gift', CONFIG.giftCount, 3.0); 
+
 
 
             createPhotos();
@@ -333,6 +353,7 @@
             animate();
 
         }
+
 
 
         function createParticleSystem(type, count, size) {
@@ -370,6 +391,7 @@
                 pTreeTargets.push(r * Math.cos(theta), y, r * Math.sin(theta));
 
 
+
                 // --- EXPLODE Vandiep ---
 
                 const u = Math.random();
@@ -385,6 +407,7 @@
                 const rad = CONFIG.explodeRadius * Math.cbrt(Math.random()) * radMult;
 
                 pExplodeTargets.push(rad * Math.sin(phi) * Math.cos(lam), rad * Math.sin(phi) * Math.sin(lam), rad * Math.cos(phi));
+
 
 
                 // --- SOFT HEART Vandiep ---
@@ -414,9 +437,11 @@
                 hz += (Math.random() - 0.5) * noise;
 
 
+
                 const scaleH = 2.2;
 
                 pHeartTargets.push(hx * scaleH, hy * scaleH + 5, hz); 
+
 
 
                 // --- INIT Vandiep ---
@@ -428,6 +453,7 @@
                 phases.push(Math.random() * Math.PI * 2);
 
             }
+
 
 
             const geo = new THREE.BufferGeometry();
@@ -449,6 +475,7 @@
             else if(type === 'red') baseColor.setHex(0xFF0000);
 
             else baseColor.setHex(0xFFFFFF);
+
 
 
             for(let i=0; i<count; i++) {
@@ -474,6 +501,7 @@
             };
 
 
+
             const mat = new THREE.PointsMaterial({
 
                 size: size,
@@ -493,6 +521,7 @@
             });
 
 
+
             const points = new THREE.Points(geo, mat);
 
             scene.add(points);
@@ -502,6 +531,7 @@
         }
 
 
+
         function createPhotos() {
 
             const geo = new THREE.PlaneGeometry(8, 8);
@@ -509,6 +539,7 @@
             const borderGeo = new THREE.PlaneGeometry(9, 9); 
 
             const borderMat = new THREE.MeshBasicMaterial({ color: 0xFFD700 }); 
+
 
 
             for(let i=0; i<5; i++) {
@@ -532,6 +563,7 @@
             }
 
         }
+
 
 
         function createDecorations() {
@@ -561,6 +593,7 @@
             titleMesh.position.set(0, 50, 0);
 
             scene.add(titleMesh);
+
 
 
             // STAR Vandiep
@@ -598,6 +631,7 @@
             scene.add(starMesh);
 
 
+
             // I LOVE YOU TEXT Vandiep
 
             const loveCanvas = document.createElement('canvas');
@@ -629,6 +663,7 @@
         }
 
 
+
         function updateParticleGroup(group, type, targetState, speed, handRotY, time) {
 
             const positions = group.geometry.attributes.position.array;
@@ -648,6 +683,7 @@
             const targetKey = (targetState === 'TREE') ? 'tree' : (targetState === 'HEART' ? 'heart' : 'explode');
 
             const targets = group.geometry.userData[(targetState === 'PHOTO') ? 'explode' : targetKey];
+
 
 
             // 1. Vandiep
@@ -707,6 +743,7 @@
                 group.geometry.attributes.size.needsUpdate = true;
 
 
+
             } else if (targetState === 'HEART') {
 
                 group.rotation.y = 0;
@@ -714,6 +751,7 @@
                 const beatScale = 1 + Math.abs(Math.sin(time * 3)) * 0.15;
 
                 group.scale.set(beatScale, beatScale, beatScale);
+
 
 
                 // Vandiep
@@ -733,6 +771,7 @@
                 group.geometry.attributes.size.needsUpdate = true;
 
 
+
             } else {
 
                 // EXPLODE
@@ -740,6 +779,7 @@
                 group.scale.set(1,1,1);
 
                 group.rotation.y += (handRotY - group.rotation.y) * 0.1;
+
 
 
                 // size, color
@@ -773,6 +813,7 @@
         }
 
 
+
         function animate() {
 
             requestAnimationFrame(animate);
@@ -784,11 +825,13 @@
             const handRotY = (handX - 0.5) * 4.0;
 
 
+
             updateParticleGroup(groupGold, 'gold', state, speed, handRotY, time);
 
             updateParticleGroup(groupRed, 'red', state, speed, handRotY, time);
 
             updateParticleGroup(groupGift, 'gift', state, speed, handRotY, time);
+
 
 
             photoMeshes.forEach((mesh, i) => {
@@ -802,8 +845,253 @@
             });
 
 
+
             if (state === 'TREE') {
 
                 titleMesh.visible = true; starMesh.visible = true; loveMesh.visible = false;
 
-                titleMesh.scale.lerp(new THREE.Vector3(1,1,1), 0
+                titleMesh.scale.lerp(new THREE.Vector3(1,1,1), 0.1);
+
+                starMesh.rotation.z -= 0.02; 
+
+                starMesh.material.opacity = 0.7 + 0.3*Math.sin(time*5);
+
+                photoMeshes.forEach(m => { m.scale.lerp(new THREE.Vector3(0,0,0), 0.1); m.visible = false; });
+
+
+
+            } else if (state === 'HEART') {
+
+                titleMesh.visible = false; starMesh.visible = false; loveMesh.visible = true;
+
+                photoMeshes.forEach(m => { m.visible = false; });
+
+                const s = 1 + Math.abs(Math.sin(time*3))*0.1;
+
+                loveMesh.scale.set(s,s,1);
+
+
+
+            } else if (state === 'EXPLODE') {
+
+                titleMesh.visible = false; starMesh.visible = false; loveMesh.visible = false;
+
+                const baseAngle = groupGold.rotation.y; 
+
+                const angleStep = (Math.PI * 2) / 5;
+
+                let bestIdx = 0; let maxZ = -999;
+
+                photoMeshes.forEach((mesh, i) => {
+
+                    mesh.visible = true;
+
+                    const angle = baseAngle + i * angleStep;
+
+                    const x = Math.sin(angle) * CONFIG.photoOrbitRadius;
+
+                    const z = Math.cos(angle) * CONFIG.photoOrbitRadius;
+
+                    const y = Math.sin(time + i) * 3; 
+
+                    mesh.position.lerp(new THREE.Vector3(x, y, z), 0.1);
+
+                    mesh.lookAt(camera.position);
+
+                    if (z > maxZ) { maxZ = z; bestIdx = i; }
+
+                    if (z > 5) { 
+
+                        const ds = 1.0 + (z/CONFIG.photoOrbitRadius)*0.8; 
+
+                        mesh.scale.lerp(new THREE.Vector3(ds, ds, ds), 0.1);
+
+                    } else {
+
+                        mesh.scale.lerp(new THREE.Vector3(0.6, 0.6, 0.6), 0.1);
+
+                    }
+
+                });
+
+                selectedIndex = bestIdx;
+
+
+
+            } else if (state === 'PHOTO') {
+
+                loveMesh.visible = false;
+
+                photoMeshes.forEach((mesh, i) => {
+
+                    if (i === selectedIndex) {
+
+                        mesh.position.lerp(new THREE.Vector3(0, 0, 60), 0.1);
+
+                        mesh.scale.lerp(new THREE.Vector3(5, 5, 5), 0.1);
+
+                        mesh.lookAt(camera.position); mesh.rotation.z = 0;
+
+                    } else {
+
+                        mesh.scale.lerp(new THREE.Vector3(0,0,0), 0.1);
+
+                    }
+
+                });
+
+            }
+
+            renderer.render(scene, camera);
+
+        }
+
+
+
+        function startSystem() {
+
+            document.getElementById('btnStart').style.display = 'none';
+
+            bgMusic.play().catch(e => console.log(e));
+
+            init3D();
+
+
+
+            const video = document.getElementsByClassName('input_video')[0];
+
+            const canvas = document.getElementById('camera-preview');
+
+            canvas.width = 160;
+
+            canvas.height = 120;
+
+            const ctx = canvas.getContext('2d');
+
+            
+
+            const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+
+            hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+
+
+
+            hands.onResults(results => {
+
+                // --- PHẦN 1: VẼ CAMERA ZOOM (Mới sửa) ---
+
+                const zoom = 2; // Zoom to gấp đôi (muốn nhỏ thì giảm về 1.5)
+
+
+
+                // Tính toán để lấy phần giữa ảnh
+
+                const sW = results.image.width / zoom;
+
+                const sH = results.image.height / zoom;
+
+                const sX = (results.image.width - sW) / 2;
+
+                const sY = (results.image.height - sH) / 2;
+
+
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Vẽ ảnh đã cắt (zoom) vào khung
+
+                ctx.drawImage(
+
+                    results.image, 
+
+                    sX, sY, sW, sH,                   // Cắt góc nhìn
+
+                    0, 0, canvas.width, canvas.height // Vẽ ra khung
+
+                );
+
+
+
+                // --- PHẦN 2: LOGIC XỬ LÝ TAY (Phải giữ lại đoạn này máy mới hiểu) ---
+
+                if (results.multiHandLandmarks.length === 2) {
+
+                    const h1 = results.multiHandLandmarks[0]; const h2 = results.multiHandLandmarks[1];
+
+                    const distIndex = Math.hypot(h1[8].x - h2[8].x, h1[8].y - h2[8].y);
+
+                    const distThumb = Math.hypot(h1[4].x - h2[4].x, h1[4].y - h2[4].y);
+
+                    if (distIndex < 0.15 && distThumb < 0.15) {
+
+                        state = 'HEART'; return;
+
+                    }
+
+                }
+
+
+
+                if(results.multiHandLandmarks.length > 0) {
+
+                    const lm = results.multiHandLandmarks[0];
+
+                    handX = lm[9].x; 
+
+                    const tips = [8,12,16,20]; const wrist = lm[0];
+
+                    let openDist = 0; tips.forEach(i => openDist += Math.hypot(lm[i].x-wrist.x, lm[i].y-wrist.y));
+
+                    const avgDist = openDist / 4;
+
+                    const pinchDist = Math.hypot(lm[4].x-lm[8].x, lm[4].y-lm[8].y);
+
+
+
+                    if (avgDist < 0.25) { 
+
+                        state = 'TREE'; 
+
+                    } else if (pinchDist < 0.05) {
+
+                        state = 'PHOTO'; 
+
+                    } else {
+
+                        state = 'EXPLODE'; 
+
+                    }
+
+                } else {
+
+                    state = 'TREE'; 
+
+                }
+
+            });
+
+
+
+            const cameraUtils = new Camera(video, {
+
+                onFrame: async () => { await hands.send({image: video}); }, width: 320, height: 240
+
+            });
+
+            cameraUtils.start();
+
+        }
+
+
+
+        window.addEventListener('resize', () => {
+
+            if(camera) { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
